@@ -10,6 +10,7 @@ import { ALLOWED_ORIGINS } from './config/constants';
 import { HttpError } from './utils/HttpError';
 
 const app: Express = express();
+import serverless from 'serverless-http';
 const PORT = process.env.PORT || 3001;
 
 // ============================================
@@ -126,3 +127,6 @@ export const api = app;
 
 // 로컬 개발 또는 다른 환경용
 export default app;
+
+// Netlify Functions Handler
+export const handler = serverless(app);

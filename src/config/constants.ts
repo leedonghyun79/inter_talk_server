@@ -30,8 +30,9 @@ export const GEMINI_CONFIG = {
 /** 허용할 Origin 목록 */
 export const ALLOWED_ORIGINS = [
   'https://artpsy.apps.tossmini.com',
-  'https://artpsy.private-apps.tossmini.com',// apps-in-toss Console QR test
-  'http://192.168.0.201:5173', // Restore Mobile/LAN dev origin
+  'https://artpsy.private-apps.tossmini.com',
+  'https://preeminent-medovik-6eecc5.netlify.app', // Backend domain itself
+  'http://192.168.0.201:5173',
   'http://localhost:5173',
   'http://localhost:3000',
 ];
