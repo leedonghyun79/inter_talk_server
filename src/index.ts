@@ -21,9 +21,9 @@ const PORT = process.env.PORT || 3001;
 // CORS 설정
 app.use(
   cors({
-    origin: ALLOWED_ORIGINS,
+    origin: '*', // 에뮬레이터 환경의 다양한 주소 대응을 위해 전체 허용으로 변경 (배포 시 검토)
     credentials: true,
-    allowedHeaders: ['Content-Type'],
+    allowedHeaders: ['Content-Type', 'Authorization'], // Authorization 필수 추가
     methods: ['GET', 'POST', 'OPTIONS'],
   })
 );
