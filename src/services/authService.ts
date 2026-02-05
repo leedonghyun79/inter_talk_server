@@ -42,9 +42,14 @@ export async function refreshAccessToken({ refreshToken }: RefreshTokenParams): 
 }
 
 export async function getUserInfo(accessToken: string): Promise<TLSResponse> {
+  console.log('AuthService: Requesting user info with token (first 10 chars):', accessToken.substring(0, 10));
+
+  // 토스 API 가이드에 따라 Bearer 접두사가 필요한지 확인 (일반적으로 OAuth2는 필수)
+  const authHeader = accessToken.startsWith('Bearer ') ? accessToken : `Bearer ${accessToken}`;
+
   return getClient().get(`${AUTH_API_BASE}/login-me`, {
     'Content-Type': 'application/json',
-    Authorization: accessToken,
+    Authorization: authHeader,
   });
 }
 
