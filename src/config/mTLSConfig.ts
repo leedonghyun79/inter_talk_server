@@ -55,6 +55,9 @@ dLp4emm1rDyF02FeX0iFTZeRBOI5uwUBkW6h5rhbz0TbpX0vRR/EDwkj/hqHQLxu
 2mP3OhxekmaEd9pAwPhseMg=
 -----END PRIVATE KEY-----`,
 
-  // 복호화 키 (security.key)
-  decryptionKey: 'LdD0UuY1sanUcFR6yErs04bTdMQxv8I+EQAZONZPheY='
+  // 복호화 키 (security.key - 끝에 점이 포함되어 있었는지 다시 확인 필요)
+  decryptionKey: 'LdD0UuY1sanUcFR6yErs04bTdMQxv8I+EQAZONZPheY=',
+
+  // AAD (Additional Authenticated Data)
+  aadString: 'TOSS'
 };

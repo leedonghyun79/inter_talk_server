@@ -6,7 +6,7 @@ import { mTLSConfig } from '../config/mTLSConfig';
 const router = Router();
 
 const DECRYPTION_KEY_BASE64 = process.env.DECRYPTION_KEY_BASE64 || mTLSConfig.decryptionKey;
-const AAD_STRING = process.env.AAD_STRING || 'TOSS';
+const AAD_STRING = process.env.AAD_STRING || mTLSConfig.aadString; // mTLSConfig의 'TOSS' 사용
 
 /**
  * POST /api/auth/get-access-token
