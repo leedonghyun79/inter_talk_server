@@ -6,6 +6,7 @@ dotenv.config();
 import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import aiRouter from './routes/ai';
+import authRouter from './routes/auth';
 import { ALLOWED_ORIGINS } from './config/constants';
 import { HttpError } from './utils/HttpError';
 
@@ -54,6 +55,9 @@ app.get('/health', (_req: Request, res: Response) => {
 
 // AI 분석 API 라우터
 app.use('/api/ai', aiRouter);
+
+// 인증 API 라우터
+app.use('/api/auth', authRouter);
 
 // ============================================
 // Error Handling

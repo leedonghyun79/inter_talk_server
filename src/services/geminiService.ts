@@ -7,7 +7,7 @@ import {
 } from '../config/constants';
 
 let genAI: GoogleGenerativeAI | null = null;
-
+console.log(`[Gemini Init] Checking API Key... Env: ${process.env.NODE_ENV}`);
 if (!process.env.GEMINI_API_KEY) {
   console.warn('⚠️  WARNING: GEMINI_API_KEY is not set in environment variables');
   console.warn('   AI analysis features will not work until you set the API key in .env file');
