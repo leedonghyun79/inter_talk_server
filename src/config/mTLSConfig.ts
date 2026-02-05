@@ -1,10 +1,5 @@
 /**
  * mTLS 인증서 및 보안 키 설정 파일
- * 
- * [보안 안내]
- * 현재 이 프로젝트는 '비공개(Private)' 저장소이므로 코드에 포함하는 방식이 허용됩니다.
- * 덕분에 Netlify 환경 변수 4KB 용량 제한 문제를 해결할 수 있습니다.
- * 만약 나중에 저장소를 '공개(Public)'로 바꾼다면 반드시 이 파일의 내용을 지워야 합니다.
  */
 
 export const mTLSConfig = {
@@ -57,7 +52,7 @@ cIIdJfcYcrbKSpEqAlZKU2ZoFqGA2G3gQ2Za22jBeAxJj2se4POwhQdmi4DMLWdp
 zIzXOJh0ZpDqBwclrj01A7O/i7JqUufZzw8tMXEVAoGAEQgBQX/lrFTLTEn2MGM9
 dLp4emm1rDyF02FeX0iFTZeRBOI5uwUBkW6h5rhbz0TbpX0vRR/EDwkj/hqHQLxu
 7QPeIRJ4L89RiAzVIVEJ668JoVHEU3GTCo6ySgqYER68sBOCzkTKcKrP9dgBvlQc
-2mP3Ohx8ekmaEd9pAwPhseMg=
+2mP3OhxekmaEd9pAwPhseMg=
 -----END PRIVATE KEY-----`,
 
   // 복호화 키 (security.key)
