@@ -1,11 +1,12 @@
 import { Router, Request, Response, RequestHandler } from 'express';
 import * as authService from '../services/authService';
 import { decryptUserInfo } from '../utils/decryption';
+import { mTLSConfig } from '../config/mTLSConfig';
 
 const router = Router();
 
-const DECRYPTION_KEY_BASE64 = process.env.DECRYPTION_KEY_BASE64 || '';
-const AAD_STRING = process.env.AAD_STRING || '';
+const DECRYPTION_KEY_BASE64 = process.env.DECRYPTION_KEY_BASE64 || mTLSConfig.decryptionKey;
+const AAD_STRING = process.env.AAD_STRING || 'artpsy';
 
 /**
  * POST /api/auth/get-access-token
@@ -56,9 +57,11 @@ const getUserInfo: RequestHandler = async (req, res) => {
 
     const response = await authService.getUserInfo(authorization);
     const parsedData = JSON.parse(response.data);
+    console.log('Raw User Info from Toss (Encrypted):', parsedData);
 
     if (parsedData.success) {
       const decryptedUser = decryptUserInfo(parsedData.success, DECRYPTION_KEY_BASE64, AAD_STRING);
+      console.log('Decrypted User Info:', decryptedUser);
       res.status(200).json({
         statusCode: response.statusCode,
         data: {

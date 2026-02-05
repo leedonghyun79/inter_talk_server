@@ -1,17 +1,20 @@
 import { TLSClient, TLSResponse } from '../utils/TLSClient';
+import { mTLSConfig } from '../config/mTLSConfig';
 
 const AUTH_API_BASE = process.env.AUTH_API_BASE || 'https://apps-in-toss-api.toss.im/api-partner/v1/apps-in-toss/user/oauth2';
-const CLIENT_CERT_PATH = process.env.CLIENT_CERT_PATH;
-const CLIENT_KEY_PATH = process.env.CLIENT_KEY_PATH;
 
 let client: TLSClient | null = null;
 
 function getClient(): TLSClient {
   if (!client) {
-    if (!CLIENT_CERT_PATH || !CLIENT_KEY_PATH) {
-      throw new Error('CLIENT_CERT_PATH or CLIENT_KEY_PATH is not defined in environment variables');
+    // 환경 변수가 있으면 환경 변수를 우선 사용하고, 없으면 mTLSConfig의 값을 사용합니다.
+    const cert = process.env.CLIENT_CERT_PATH || mTLSConfig.clientCert;
+    const key = process.env.CLIENT_KEY_PATH || mTLSConfig.clientKey;
+
+    if (!cert || !key) {
+      throw new Error('mTLS certificates are missing (both Env and Config)');
     }
-    client = new TLSClient(CLIENT_CERT_PATH, CLIENT_KEY_PATH);
+    client = new TLSClient(cert, key);
   }
   return client;
 }
