@@ -4,7 +4,7 @@
 
 /** Gemini AI 모델 설정 */
 export const GEMINI_CONFIG = {
-  model: 'gemini-3.5-flash',
+  model: 'gemini-2.5-flash',
   temperature: 0.7,
   maxOutputTokens: 600,
 };
