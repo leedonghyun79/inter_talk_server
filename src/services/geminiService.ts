@@ -68,7 +68,7 @@ export async function transcribeAudio(audioBase64: string, mimeType: string): Pr
     throw new Error('Gemini API가 초기화되지 않았습니다.');
   }
 
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: GEMINI_CONFIG.model });
 
   try {
     const result = await model.generateContent([
