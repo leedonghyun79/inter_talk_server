@@ -270,3 +270,4 @@ const data = await response.json();
 ## 📄 라이선스
 
 ISC
+# inter_talk_server
