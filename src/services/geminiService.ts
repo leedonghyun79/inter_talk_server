@@ -34,7 +34,7 @@ export async function analyzeInterview(params: AnalyzeInterviewParams): Promise<
     model: GEMINI_CONFIG.model,
     generationConfig: {
       temperature: GEMINI_CONFIG.temperature,
-      maxOutputTokens: GEMINI_CONFIG.maxOutputTokens,
+      responseMimeType: "application/json",
     },
   });
 
