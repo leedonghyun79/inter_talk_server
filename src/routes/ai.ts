@@ -1,145 +1,69 @@
 import { Router, Request, Response } from 'express';
-import { analyzeDrawing, analyzeColors, analyzeMemory } from '../services/geminiService';
-import { receiveImage } from '../utils/fileUpload';
-import { HttpError } from '../utils/HttpError';
+import { analyzeInterview, transcribeAudio } from '../services/geminiService';
 
 const router = Router();
 
 /**
- * POST /api/ai/analyze-drawing
- * 그림 심리 분석 (multipart/form-data)
- * 
- * 요청:
- * - Content-Type: multipart/form-data
- * - Body: 
- *   - image: 이미지 파일 (JPEG, PNG, WEBP)
- *   - topic: 그림 주제 (예: "나무", "집", "사람")
+ * POST /api/ai/analyze-interview
+ * 면접 답변 분석
  */
-router.post('/analyze-drawing', async (req: Request, res: Response): Promise<void> => {
+router.post('/analyze-interview', async (req: Request, res: Response) => {
   try {
-    // 1. Content-Type 검증
-    const contentType = req.headers['content-type'] || '';
+    const { question, answer } = req.body;
 
-    if (!contentType.toLowerCase().includes('multipart/form-data')) {
+    if (!question || !answer) {
       res.status(400).json({
-        error: 'Bad Request',
-        message: 'Content-Type은 multipart/form-data여야 합니다.',
+        success: false,
+        message: '질문과 답변을 모두 입력해주세요.'
       });
       return;
     }
 
-    // 2. 이미지 파일 추출
-    const imageBuffer = await receiveImage(req);
+    const analysis = await analyzeInterview({ question, answer });
 
-    if (!imageBuffer) {
-      res.status(400).json({
-        error: 'Bad Request',
-        message: '이미지 파일이 제공되지 않았습니다.',
-      });
-      return;
-    }
-
-    // 3. topic 파라미터 추출 (폼 필드에서)
-    const topic = (req.body && req.body.topic) || '그림';
-
-    // 4. AI 분석
-    const analysis = await analyzeDrawing({ topic, imageBuffer });
-
-    // 5. 성공 응답
     res.json({
       success: true,
       analysis,
       timestamp: new Date().toISOString(),
     });
-  } catch (error) {
-    console.error('Error in analyze-drawing:', error);
-
-    const status = error instanceof HttpError ? error.status : 500;
-    const message = error instanceof Error ? error.message : '분석 중 오류가 발생했습니다.';
-
-    res.status(status).json({
-      error: 'Internal Server Error',
-      message,
+  } catch (error: any) {
+    console.error('Error in analyze-interview:', error);
+    res.status(500).json({
+      success: false,
+      message: error.message || '분석 중 오류가 발생했습니다.'
     });
   }
 });
 
 /**
- * POST /api/ai/analyze-colors
- * 색상 심리 분석 (JSON)
- * 
- * 요청:
- * - Content-Type: application/json
- * - Body: { colors: ["#FF0000", "#00FF00"] }
+ * POST /api/ai/transcribe
+ * 음성 → 텍스트 변환 (Gemini 멀티모달)
+ * body: { audio: string (base64), mimeType: string }
  */
-router.post('/analyze-colors', async (req: Request, res: Response): Promise<void> => {
+router.post('/transcribe', async (req: Request, res: Response) => {
   try {
-    const { colors } = req.body;
+    const { audio, mimeType } = req.body;
 
-    if (!colors || !Array.isArray(colors) || colors.length === 0) {
+    if (!audio || !mimeType) {
       res.status(400).json({
-        error: 'Bad Request',
-        message: 'colors 배열은 필수 항목입니다.',
+        success: false,
+        message: '오디오 데이터와 mimeType을 입력해주세요.'
       });
       return;
     }
 
-    const analysis = await analyzeColors({ colors });
+    const transcript = await transcribeAudio(audio, mimeType);
 
     res.json({
       success: true,
-      analysis,
+      transcript,
       timestamp: new Date().toISOString(),
     });
-  } catch (error) {
-    console.error('Error in analyze-colors:', error);
-
-    const status = error instanceof HttpError ? error.status : 500;
-    const message = error instanceof Error ? error.message : '분석 중 오류가 발생했습니다.';
-
-    res.status(status).json({
-      error: 'Internal Server Error',
-      message,
-    });
-  }
-});
-
-/**
- * POST /api/ai/analyze-memory
- * 기억력 테스트 분석 (JSON)
- * 
- * 요청:
- * - Content-Type: application/json
- * - Body: { selectedCards: ["card1", "card2"] }
- */
-router.post('/analyze-memory', async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { selectedCards } = req.body;
-
-    if (!selectedCards || !Array.isArray(selectedCards)) {
-      res.status(400).json({
-        error: 'Bad Request',
-        message: 'selectedCards 배열은 필수 항목입니다.',
-      });
-      return;
-    }
-
-    const analysis = await analyzeMemory({ selectedCards });
-
-    res.json({
-      success: true,
-      analysis,
-      timestamp: new Date().toISOString(),
-    });
-  } catch (error) {
-    console.error('Error in analyze-memory:', error);
-
-    const status = error instanceof HttpError ? error.status : 500;
-    const message = error instanceof Error ? error.message : '분석 중 오류가 발생했습니다.';
-
-    res.status(status).json({
-      error: 'Internal Server Error',
-      message,
+  } catch (error: any) {
+    console.error('Error in transcribe:', error);
+    res.status(500).json({
+      success: false,
+      message: error.message || '음성 변환 중 오류가 발생했습니다.'
     });
   }
 });

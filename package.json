@@ -1,7 +1,7 @@
 {
-  "name": "silhouette-backend",
+  "name": "inter-talk-server",
   "version": "1.0.0",
-  "description": "Backend API for Silhouette Master - Google Cloud Functions",
+  "description": "Backend API for Inter Talk - Interview AI Analysis",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch --env-file=.env src/index.ts",
