@@ -6,7 +6,7 @@
 export const GEMINI_CONFIG = {
   model: 'gemini-2.5-flash',
   temperature: 0.7,
-  maxOutputTokens: 600,
+  maxOutputTokens: 2048,
 };
 
 /** 허용할 Origin 목록 */
